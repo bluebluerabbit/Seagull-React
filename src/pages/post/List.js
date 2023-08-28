@@ -76,40 +76,16 @@ const Post = () => {
     const fetchData = async () => {
       await axios.get('http://localhost:3004/api/post/lists')
         .then((res) => {
-          setLists(res.data);
-          setListLength(res.data.length - 1);
-          setIsCallLists(true);
-        }).catch(() => {
-          console.log("fail");
-          setLists([
-            {
-              title: "test",
-              date: "test",
-              tag: 0,
-              content: "test"
-            },
-            {
-              title: "test",
-              date: "test",
-              tag: 0,
-              content: "test"
-            },
-            {
-              title: "test",
-              date: "test",
-              tag: 0,
-              content: "test"
-            },
-            {
-              title: "test",
-              date: "test",
-              tag: 0,
-              content: "test"
-            },
-          ]);
-
-          // setTimeout(() => setIsCallLists(true), 2000);
-
+          try {
+            if( res.data.status == "success" ) {
+              let data = JSON.parse(res.data.data) 
+              setLists(data);
+              setListLength(res.data.data.length - 1);
+              setIsCallLists(true);
+            }
+          } catch {
+            return
+          }
         })
     }
 

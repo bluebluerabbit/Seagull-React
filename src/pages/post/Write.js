@@ -57,12 +57,16 @@ const Write = () => {
     await axios.post("http://localhost:3004/api/post/write", {
       Writedata
     })
-      .then((response) => {
-        console.log("success");
+      .then((res) => {
+        try {
+          console.log(res)
+          // if ( res.data.status == "success" ) {
+          //   return
+          // }
+        } catch (error){
+          return
+        }
       })
-      .catch(() => {
-        console.log("fail");
-      });
 
     await navigate(-1)
   }
