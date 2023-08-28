@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import LocationMarker from "../img/icon/location_select.svg";
 
@@ -30,17 +30,35 @@ function setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocati
 // setTestResponse 함수 : 부모 컴포넌트의 testResponse state의 setter
 const SelectLocation = ({ setLocation, setSelectLocationToggle }) => {
     let [nowLocation, setNowLocation] = useState(null);
+    
+    // 현재 위치
+    let [myLat, setMyLat] = useState(null);
+    let [myLng, setMyLng] = useState(null);
+
+    const mapContainer = useRef(null);
 
     useEffect(() => {
         // kakao.js가 load됐을 때 메서드 호출
+        // 요소가 준비되지 않았으면, 아무것도 하지 않음
+        if (!mapContainer.current) return;
+
         kakao.maps.load(() => {
-            const container = document.getElementById("map");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    let lat = position.coords.latitude, // 위도
+                        lng = position.coords.longitude; // 경도
+
+                    setMyLat(lat);
+                    setMyLng(lng);
+                });
+            }
+
             const options = {
-                center: new kakao.maps.LatLng(35.14932, 129.11462, 16),
+                center: new kakao.maps.LatLng(myLat, myLng, 16),
                 level: 6,
             };
 
-            const map = new kakao.maps.Map(container, options);
+            const map = new kakao.maps.Map(mapContainer.current, options);
 
             // 주소-좌표 변환 객체 생성
             const geocoder = new kakao.maps.services.Geocoder();
@@ -74,13 +92,13 @@ const SelectLocation = ({ setLocation, setSelectLocationToggle }) => {
             });
         })
 
-    }, []);
+    }, [myLat, myLng]);
 
     return (
         <React.Fragment>
-            <div className="m-auto flex flex-col items-center">
+            <div className="m-auto flex flex-col items-center animated-fade max-w-[640px]">
                 {/* map */}
-                <div id="map" className="w-screen h-screen"></div>
+                <div ref={mapContainer} id="map" className="w-full h-screen"></div>
 
                 {/* complete button */}
                 <button className="bg-[#1F83EB] h-[60px] w-5/6 

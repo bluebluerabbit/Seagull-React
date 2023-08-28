@@ -63,7 +63,7 @@ const Write = () => {
           // if ( res.data.status == "success" ) {
           //   return
           // }
-        } catch (error){
+        } catch (error) {
           return
         }
       })
@@ -80,67 +80,81 @@ const Write = () => {
       <div className="animated-fade bg-white h-screen drop-shadow-bg">
         {
           selectLocationToggle
-            ? <SelectLocation className="fixed left-0 top-0 right-0"
+            ?
+            <SelectLocation className="fixed left-0 top-0 right-0"
               setLocation={setLocation}
               setSelectLocationToggle={setSelectLocationToggle} />
-            : null
+            :
+            <React.Fragment>
+              <div className="sticky top-0 bg-white">
+                <div className="flex justify-center items-center p-5">
+                  <Previous className="absolute left-0 ml-5" onClick={() => navigate(-1)} />
+                  <span className="text-lg font-medium">
+                    정보 작성
+                  </span>
+                </div>
+                <hr className="mx-2" />
+              </div>
+
+
+              <div className="w-11/12 m-auto">
+                <div className="my-6">
+                  <div className="text-l mb-2 font-light">
+                    행사제목
+                  </div>
+
+                  <input className=" bg-white border border-slate-300 rounded-2xl focus:outline-none w-full h-[46px] p-2 px-4"
+                    value={title} onChange={getTitle} />
+                </div>
+
+                <div className="my-6">
+                  <div className="text-l mb-2 font-light">
+                    위치
+                  </div>
+
+                  <div className="flex">
+                    <div className="bg-white border border-slate-300 rounded-2xl w-full py-2 h-[46px] px-4">
+                      {location}
+                    </div>
+                    <Position className="drop-shadow-position w-12 ml-2 mt-0.5"
+                      onClick={() => setSelectLocationToggle(!selectLocationToggle)} />
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap -mt-4">
+                  {
+                    tagTextArray.map((tag, idx) => {
+                      return (
+                        <button className="flex justify-start rounded-full font-light border w-auto m-2 p-0.5 focus:bg-slate-200 transition"
+                          onClick={() => setTag(idx)}>
+
+                          <div className={tagColorArray[idx] + " w-2.5 h-2.5 my-auto mr-1 ml-2 rounded-full"} />
+
+                          <span className="text-sm mr-2">
+                            {tag}
+                          </span>
+                        </button>
+                      )
+                    })
+                  }
+                </div>
+
+                <div className="my-3">
+                  <div className="text-l mb-2 font-light">
+                    내용
+                  </div>
+                  
+                  <textarea className=" bg-white border border-slate-300 h-32 w-full rounded-2xl focus:outline-none p-4"
+                    onChange={getContent} />
+                </div>
+
+                <CompleteButton content="작성 완료" _event={postWrite} />
+
+              </div>
+            </React.Fragment>
         }
 
-        <div className="sticky top-0 bg-white">
-          <div className="flex justify-center items-center p-5">
-            <Previous className="absolute left-0 ml-5" onClick={() => navigate(-1)} />
-            <span className="text-lg font-medium">
-              정보 작성
-            </span>
-          </div>
-          <hr className="mx-2" />
-        </div>
 
-
-        <div className="w-11/12 m-auto">
-
-          <div className="my-6">
-            <div className="text-l mb-2 font-light">행사제목</div>
-            <input className=" bg-white border border-slate-300 rounded-2xl focus:outline-none w-full h-[46px] p-2"
-              value={title} onChange={getTitle} />
-          </div>
-
-          <div className="my-6">
-            <div className="text-l mb-2 font-light">위치</div>
-            <div className="flex">
-              <div className="bg-white border border-slate-300 rounded-2xl w-full py-2 h-[46px]">
-                {location}
-              </div>
-              <Position className="drop-shadow-position w-12 ml-2 mt-0.5"
-                onClick={() => setSelectLocationToggle(!selectLocationToggle)} />
-            </div>
-          </div>
-
-          <div className="flex flex-wrap -mt-4">
-            {
-              tagTextArray.map((tag, idx) => {
-                return (
-                  <button className="flex justify-start rounded-full font-light border w-auto m-2 p-0.5 focus:bg-slate-200"
-                    onClick={() => setTag(idx)}>
-                    <div className={tagColorArray[idx] + " w-2.5 h-2.5 my-auto mr-1 ml-2 rounded-full"} />
-                    <span className="text-sm mr-2">
-                      {tag}
-                    </span>
-                  </button>
-                )
-              })
-            }
-          </div>
-
-          <div className="my-3">
-            <div className="text-l mb-2 font-light">내용</div>
-            <textarea className=" bg-white border border-slate-300 h-32 w-full rounded-2xl focus:outline-none"
-              onChange={getContent} />
-          </div>
-
-          <CompleteButton content="작성 완료" _event={postWrite} />
-
-        </div>
       </div>
     </React.Fragment>
   );
