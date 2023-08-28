@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { ReactComponent as Write } from "../../img/icon/write.svg";
 import { ReactComponent as Position } from "../../img/icon/position.svg";
+import { ReactComponent as Location } from "../../img/icon/location.svg";
 
 import LocationMarker from "../../img/icon/location_select.svg";
 
@@ -168,10 +169,19 @@ const Post = () => {
                 <div key={index} className="flex flex-col w-11/12 m-auto">
                   <div className="flex justify-between my-2">
                     <div>
-                      <div className="text-l font-bold">
+                      {/* title */}
+                      <div className="text-l font-bold mb-1">
                         {item.title}
                       </div>
-                      <div className="text-xs -mt-1" >
+
+                      {/* location */}
+                      <div className="flex text-xs items-center">
+                        <Location className="w-3" />
+                        <span className="ml-1">{item.location}</span>
+                      </div>
+
+                      {/* date */}
+                      <div className="text-xs mt-1" >
                         {item.date}
                       </div>
                     </div>
