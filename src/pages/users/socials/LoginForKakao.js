@@ -27,7 +27,7 @@ const LoginForKakao = () => {
                 localStorage.setItem("userType", "KAKAO")
                 navigate('/loading')
             }else{
-                navigate('/signin')
+                navigate('/login')
                 console.log("로그인 실패")
             }
         })

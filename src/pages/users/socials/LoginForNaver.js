@@ -27,7 +27,7 @@ const LoginForNaver = () => {
                 localStorage.setItem("userType", "NAVER")
                 navigate('/loading')
             }else{
-                navigate('/signin')
+                navigate('/login')
                 console.log("로그인 실패")
             }
         }).catch((err) => {

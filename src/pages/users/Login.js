@@ -33,7 +33,7 @@ const SignIn = () => {
       }).then((res) => {
         console.log(res.data)
         if(res.data.data.result == "true"){
-          if (localStorage.getItem("id") == res.data.data) {
+          if (localStorage.getItem("id") == res.data.data.id) {
             console.log("일치합니다.")
             navigate('/loading')
           }
