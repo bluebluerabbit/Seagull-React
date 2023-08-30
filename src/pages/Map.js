@@ -24,14 +24,21 @@ let markerArray = []
 async function getEventInfoRequest(url, setter) {
     await axios.get(url)
         .then((response) => {
+            let res = response.data;
             // 각 행사 데이터를 넣어줌
-            let data = response.data.data;
-            console.log(JSON.parse(data));
-            setter(JSON.parse(data));
-            console.log("success");
+            if (res.status === "success") {
+                let data = res.data;
+                console.log(JSON.parse(data));
+                setter(JSON.parse(data));
+            }
+            // console에 서버 오류임을 알림
+            else if (res.status === "error") {
+                let msg = res.msg;
+                console.log(msg);
+            }
         })
         .catch(() => {
-            console.log("fail");
+            console.log("클라이언트 오류 발생");
         });
 }
 
