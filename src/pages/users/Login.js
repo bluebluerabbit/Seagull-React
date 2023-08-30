@@ -47,7 +47,7 @@ const SignIn = () => {
         kakaoAccessToken
       }).then((res) => {
         console.log(res.data)
-        if (localStorage.getItem("id") == res.data.id) {
+        if (localStorage.getItem("id") == res.data.data.id) {
           console.log("일치합니다.")
           navigate('/loading')
         }
@@ -60,7 +60,7 @@ const SignIn = () => {
         naverAccessToken
       }).then((res) => {
         console.log(res.data)
-        if (localStorage.getItem("id") == res.data.id) {
+        if (localStorage.getItem("id") == res.data.data.id) {
           console.log("일치합니다.")
           navigate('/loading')
         }
