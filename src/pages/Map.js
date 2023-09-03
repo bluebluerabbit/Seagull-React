@@ -124,6 +124,7 @@ const Map = () => {
     const categoryArray = ["뮤지컬", "연극", "공연·전시", "콘서트"];
     const categoryURL = ["/musicals", "/plays", "/exhibitions", "/concerts"];
     const categoryColorArray = ["bg-red-500", "bg-blue-600", "bg-green-500", "bg-yellow-400"];
+    const categoryFillColorArray = ["fill-red-500", "fill-blue-600", "fill-green-500", "fill-yellow-400"];
 
     const [map, setMap] = useState(null);
     const [geocoder, setGeocoder] = useState(null);
@@ -278,7 +279,6 @@ const Map = () => {
                         }
                     </ul>
 
-                    {console.log(`fill-${categoryColorArray[selectedCategoryIndex].split('-')[1]}-${categoryColorArray[selectedCategoryIndex].split('-')[2]}`)}
                     {
                         eventStatus ?
                             <React.Fragment>
@@ -299,7 +299,7 @@ const Map = () => {
                                     {/* check */}
                                     <span role="status">
                                         <svg aria-hidden="true"
-                                            class={`inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-${categoryColorArray[selectedCategoryIndex].split('-')[1]}-${categoryColorArray[selectedCategoryIndex].split('-')[2]}`
+                                            class={`inline w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 ${categoryFillColorArray[selectedCategoryIndex]}`
                                             }
                                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />

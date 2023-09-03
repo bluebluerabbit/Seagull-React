@@ -58,7 +58,7 @@ function HashTag({ hashtagStrings }) {
                     hashtagStrings.map((item, index) => {
                         return (
                             <li className={`flex items-center justify-center
-                            whitespace-no-wrap text-center overflow-auto mt-4 -mb-3 h-full
+                            whitespace-no-wrap text-center overflow-auto mt-4 -mb-3 h-full 
                             no-underline inline-block bg-white w-auto text-gray-700 font-normal
                             rounded-full px-2 py-1 mr-1
                             active:brightness-75
