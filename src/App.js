@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 
-
 import Intro from "./pages/Intro";
 import Loading from "./pages/Loading";
 import Login from "./pages/users/Login";
@@ -21,7 +20,6 @@ import NaverLogin from "./pages/users/socials/LoginForNaver";
 const App = () => {
   return (
     <React.Fragment>
-
       <div className="max-w-[640px] w-full m-auto transition-all">
         <BrowserRouter>
           <Routes>
@@ -43,8 +41,6 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
-      {/* <div className="absolute bg-gray-200 w-screen h-screen">
-      </div> */}
     </React.Fragment>
   );
 };
