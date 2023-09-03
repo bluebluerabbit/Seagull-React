@@ -53,17 +53,18 @@ function HashTag({ hashtagStrings }) {
 
     return (
         <React.Fragment>
-            <ul className="flex items-center justify-start">
+            <ul className="flex flex-wrap items-center justify-start transition">
                 {
                     hashtagStrings.map((item, index) => {
                         return (
                             <li className={`flex items-center justify-center
-                            whitespace-no-wrap text-center overflow-auto mt-3 -mb-3 h-full
+                            whitespace-no-wrap text-center overflow-auto mt-4 -mb-3 h-full
                             no-underline inline-block bg-white w-auto text-gray-700 font-normal
                             rounded-full px-2 py-1 mr-1
                             active:brightness-75
                             hover:cursor-pointer hover:scale-105 transition 
-                            ${hashtag[hashtagStrings[index]].bg}`}
+                            ${hashtag[hashtagStrings[index]].bg}
+                            ${hashtag[hashtagStrings[index]].text}`}
                                 key={ item }>
                                 #{ item }
                             </li>
@@ -81,7 +82,7 @@ const Detail = () => {
     let [isVisibleHeartStatus, setIsibleHeartStatus] = useState(false);
 
     // 해시태그 배열
-    let hashtagStrings = ["잔잔한", "가족", "혼자", "겨울"]
+    let hashtagStrings = ["잔잔한", "가족", "혼자", "겨울", "서예", "K-POP", "사진"]
 
     const navigate = useNavigate();
     const location = useLocation();
