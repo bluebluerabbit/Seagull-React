@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import axios from "axios";
 
 import '../App.css';
@@ -10,7 +11,7 @@ import { ReactComponent as HeartActive } from "../img/icon/heart_active.svg";
 import { ReactComponent as Location } from "../img/icon/location.svg";
 
 // 찜 목록 추가 시, 안내 메시지를 하단에 띄우는 컴포넌트
-function HeartStatus({setIsibleHeartStatus}) {
+function HeartStatus({ setIsibleHeartStatus }) {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ function HeartStatus({setIsibleHeartStatus}) {
                 sticky fixed bottom-5 m-auto
                 animated-fade-full">
                 <span className="flex justify-center items-center">
-                    <HeartActive className="mr-2 w-5"/>
+                    <HeartActive className="mr-2 w-5" />
                     찜 목록에 추가되었습니다.
                 </span>
             </div>
@@ -44,9 +45,43 @@ function HeartStatus({setIsibleHeartStatus}) {
     );
 }
 
+function HashTag({ hashtagStrings }) {
+    let hashtag = useSelector((state) => (state.hashtag.hashtagName));
+    console.log(hashtag);
+    console.log(hashtag)
+
+
+    return (
+        <React.Fragment>
+            <ul className="flex items-center justify-start">
+                {
+                    hashtagStrings.map((item, index) => {
+                        return (
+                            <li className={`flex items-center justify-center
+                            whitespace-no-wrap text-center overflow-auto mt-3 -mb-3 h-full
+                            no-underline inline-block bg-white w-auto text-gray-700 font-normal
+                            rounded-full px-2 py-1 mr-1
+                            active:brightness-75
+                            hover:cursor-pointer hover:scale-105 transition 
+                            ${hashtag[hashtagStrings[index]].bg}`}
+                                key={ item }>
+                                #{ item }
+                            </li>
+                        )
+                    })
+                }
+            </ul>
+        </React.Fragment>
+
+    )
+}
+
 const Detail = () => {
     let [heart, setHeart] = useState(false);
     let [isVisibleHeartStatus, setIsibleHeartStatus] = useState(false);
+
+    // 해시태그 배열
+    let hashtagStrings = ["잔잔한", "가족", "혼자", "겨울"]
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -69,16 +104,18 @@ const Detail = () => {
                 }
             }
         }
+
         await axios.post('http://localhost:3004/api/user/favorite', favoriteData
-        ).then((res) => {
-            if (res.data.status === "success") {
+        ).then((response) => {
+            let res = response.data;
+            if (res.status === "success") {
                 setIsibleHeartStatus(true);
             }
-            else if (res.data.status === "fail") {
-                console.log(res.data.data.msg);
+            else if (res.status === "fail") {
+                console.log(res.msg);
             }
-            else if (res.data.status === "error") {
-                console.log(res.data.msg);
+            else if (res.status === "error") {
+                console.log(res.msg);
             }
         })
     }
@@ -116,6 +153,9 @@ const Detail = () => {
                     {/* poster */}
                     <img alt="img"
                         src={eventInfo.src} />
+
+
+                    <HashTag hashtagStrings={hashtagStrings} />
 
                     {/* event title */}
                     <div className="text-2xl my-5 font-bold">
@@ -165,11 +205,11 @@ const Detail = () => {
                 {/* Heart Status */}
                 {
                     isVisibleHeartStatus ?
-                    <HeartStatus 
-                    setIsibleHeartStatus={setIsibleHeartStatus} /> :
-                    null
+                        <HeartStatus
+                            setIsibleHeartStatus={setIsibleHeartStatus} /> :
+                        null
                 }
-                
+
             </div>
         </React.Fragment>
     );
