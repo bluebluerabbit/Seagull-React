@@ -48,8 +48,8 @@ function HeartStatus({ setIsibleHeartStatus }) {
 function HashTag({ hashtagStrings }) {
     let hashtag = useSelector((state) => (state.hashtag.hashtagName));
     console.log(hashtag);
-    console.log(hashtag)
 
+    let navigate = useNavigate();
 
     return (
         <React.Fragment>
@@ -59,13 +59,21 @@ function HashTag({ hashtagStrings }) {
                         return (
                             <li className={`flex items-center justify-center
                             whitespace-no-wrap text-center overflow-auto mt-4 -mb-3 h-full 
-                            no-underline inline-block bg-white w-auto text-gray-700 font-normal
+                            no-underline inline-block w-auto text-gray-700 font-normal
                             rounded-full px-2 py-1 mr-1
                             active:brightness-75
                             hover:cursor-pointer hover:scale-105 transition 
-                            ${hashtag[hashtagStrings[index]].bg}
-                            ${hashtag[hashtagStrings[index]].text}`}
-                                key={ item }>
+                            ${hashtag[hashtagStrings[index]].bg} ${hashtag[hashtagStrings[index]].text}`}
+                            key={ item }
+                            onClick={() => 
+                                navigate('/hashtag-map', {
+                                    state: {
+                                        hashtagName: hashtagStrings[index],
+                                        hashtagBackgroundColor: hashtag[hashtagStrings[index]].bg,
+                                        hashtagTextColor: hashtag[hashtagStrings[index]].text
+                                    }
+                                })
+                            }>
                                 #{ item }
                             </li>
                         )

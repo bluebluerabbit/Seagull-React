@@ -6,7 +6,10 @@ import Intro from "./pages/Intro";
 import Loading from "./pages/Loading";
 import Login from "./pages/users/Login";
 import SignUp from "./pages/users/SignUp";
+
 import Map from "./pages/Map";
+import HashtagMap from "./pages/HashtagMap";
+
 import MyPage from "./pages/MyPage";
 import Detail from "./pages/Detail";
 import Nickname from "./pages/users/Nickname";
@@ -16,6 +19,7 @@ import PostWrite from "./pages/post/Write";
 
 import KakaoLogin from "./pages/users/socials/LoginForKakao";
 import NaverLogin from "./pages/users/socials/LoginForNaver";
+
 
 const App = () => {
   return (
@@ -36,6 +40,7 @@ const App = () => {
             <Route path="/post/write" element={<PostWrite />} />
 
             <Route path="/map" element={<Map />} />
+            <Route path="/hashtag-map" element={<HashtagMap />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/detail" element={<Detail />} />
           </Routes>
