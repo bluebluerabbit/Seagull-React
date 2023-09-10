@@ -81,7 +81,11 @@ const Post = () => {
           try {
             if (res.data.status == "success") {
               let data = JSON.parse(res.data.data)
-              setLists(data);
+              for(let i=0;i<data.length;i++){
+                if(data[i].location.split(' ')[1]==splitNowPositionString){
+                  setLists(data);
+                }
+              }
               setListLength(res.data.data.length - 1);
               setIsCallLists(true);
             }
