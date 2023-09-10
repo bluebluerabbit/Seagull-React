@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Heart } from "../img/icon/heart_active.svg"
-
+import axios from "axios";
 import Nav from "../component/BottomNav";
 
 const MyPage = () => {
 
-    var nickName = " 매운알파카 ";
+    var nickName = localStorage.getItem('id');
 
     // const keep = ["바보의 세계", "검은고양이", "청부살인 협동조합"]
     // const keep = []
-    const keep = ['test', 'test', 'test', 'test', 'test', 'test', 'test', 'test',]
+    //const keep = ['test', 'test', 'test', 'test', 'test', 'test', 'test', 'test',]
+    const [keep, setLists] = useState([]);
+    const [isCallLists, setIsCallLists] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          await axios.post('http://localhost:3004/api/user/favorites/list',{nickName})
+            .then((res) => {
+                console.log(res)
+              try {
+                if (res.data.status == "success") {
+                  let data = JSON.parse(res.data.data)
+                  setLists(data);
+                  setIsCallLists(true);
+                }
+              } catch {
+                return
+              }
+            })
+        }
+        fetchData();
+      }, []);
 
     console.log("w-full m-auto animated-fade bg-white " + (keep.length > 0) ? "h-full" : "h-screen")
 

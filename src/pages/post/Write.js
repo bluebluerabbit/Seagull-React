@@ -17,10 +17,8 @@ const Write = () => {
   const navigate = useNavigate();
 
   const [userId, setId] = useState();
-
   const [tag, setTag] = useState();
   const [date, setDate] = useState();
-
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
 
@@ -46,7 +44,7 @@ const Write = () => {
   async function postWrite() {
 
     const Writedata = {
-      userId: "tmp",
+      userId: localStorage.getItem('id'),
       title: title,
       date: date,
       location: location,
@@ -59,16 +57,11 @@ const Write = () => {
     })
       .then((res) => {
         try {
-          console.log(res)
-          // if ( res.data.status == "success" ) {
-          //   return
-          // }
+          navigate(-1)
         } catch (error) {
           return
         }
       })
-
-    await navigate(-1)
   }
 
   const tagColorArray = ["bg-[#000AFF]", "bg-[#00C2FF]", "bg-[#E37A39]", "bg-[#FF0000]"];
@@ -123,15 +116,15 @@ const Write = () => {
 
                 <div className="flex flex-wrap -mt-4">
                   {
-                    tagTextArray.map((tag, idx) => {
+                    tagTextArray.map((tagText, idx) => {
                       return (
-                        <button className="flex justify-start rounded-full font-light border w-auto m-2 p-0.5 focus:bg-slate-200 transition"
+                        <button className={tag==idx?"flex justify-start rounded-full font-light border w-auto m-2 p-0.5  bg-slate-200":"flex justify-start rounded-full font-light border w-auto m-2 p-0.5"}
                           onClick={() => setTag(idx)}>
 
                           <div className={tagColorArray[idx] + " w-2.5 h-2.5 my-auto mr-1 ml-2 rounded-full"} />
 
                           <span className="text-sm mr-2">
-                            {tag}
+                            {tagText}
                           </span>
                         </button>
                       )
@@ -153,8 +146,6 @@ const Write = () => {
               </div>
             </React.Fragment>
         }
-
-
       </div>
     </React.Fragment>
   );
