@@ -28,7 +28,7 @@ const Loading = () => {
             userType : userType,
             userId : userId
         }).then((req) => {
-            if(req.data.status == "success"){
+            if(req.data.data.exist == "true"){
                 localStorage.setItem("nickname", req.data.data.nickname)
                 delay();
             }else{

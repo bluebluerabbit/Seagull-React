@@ -22,7 +22,7 @@ const LoginForKakao = () => {
             console.log(req.data.token);
             if (req.data.data == "로그인 성공!!"){
                 console.log("여기 들어왔어?");
-                localStorage.setItem("kakaoLoginJWT", req.data.token)
+                localStorage.setItem("kakaoLoginJWT", req.data.data.token)
                 localStorage.setItem("id", req.data.kakaoNickname)
                 localStorage.setItem("userType", "KAKAO")
                 navigate('/loading')
