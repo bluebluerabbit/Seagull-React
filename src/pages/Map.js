@@ -76,10 +76,12 @@ function setEventMarker(navigate, map, geocoder, data, markerImage) {
                         state: {
                             title: data[i].title,
                             location: data[i].location,
-                            duration: data[i].startDate + ' ~ ' + data[i].endDate,
+                            startDate: data[i].startDate,
+                            endDate: data[i].endDate,
                             time: data[i].time,
                             price: data[i].price,
-                            src: data[i].src
+                            src: data[i].src,
+                            theme: data[i].theme
                         }
                     });
                 });
