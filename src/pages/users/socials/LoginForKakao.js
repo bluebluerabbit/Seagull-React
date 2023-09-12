@@ -19,11 +19,11 @@ const LoginForKakao = () => {
             code : loginCode
         })
         .then((req) => {
-            console.log(req.data.token);
-            if (req.data.data == "로그인 성공!!"){
+            console.log(req.data.data.token);
+            if (req.data.data.result == "true"){
                 console.log("여기 들어왔어?");
                 localStorage.setItem("kakaoLoginJWT", req.data.data.token)
-                localStorage.setItem("id", req.data.kakaoNickname)
+                localStorage.setItem("id", req.data.data.kakaoId)
                 localStorage.setItem("userType", "KAKAO")
                 navigate('/loading')
             }else{
