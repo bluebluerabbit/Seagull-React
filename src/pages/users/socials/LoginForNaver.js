@@ -20,10 +20,10 @@ const LoginForNaver = () => {
             code : loginCode,
             state : stateCode,
         }).then((req) => {
-            console.log(req.data);
-            if (req.data.data == "로그인 성공!!"){
-                localStorage.setItem("naverLoginJWT", req.data.token)
-                localStorage.setItem("id", req.data.naverNickname)
+            console.log(req.data.data.token);
+            if (req.data.data.result == "true"){
+                localStorage.setItem("naverLoginJWT", req.data.data.token)
+                localStorage.setItem("id", req.data.data.naverId)
                 localStorage.setItem("userType", "NAVER")
                 navigate('/loading')
             }else{
