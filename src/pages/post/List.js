@@ -81,11 +81,15 @@ const Post = () => {
           try {
             if (res.data.status == "success") {
               let data = JSON.parse(res.data.data)
+              let tempListsData = []
+              
               for(let i=0;i<data.length;i++){
-                if(data[i].location.split(' ')[1]==splitNowPositionString){
-                  setLists(data);
+                if(data[i].location.split(' ')[1] == splitNowPositionString){
+                  tempListsData.push(data[i]);
                 }
               }
+              setLists(tempListsData);
+
               setListLength(res.data.data.length - 1);
               setIsCallLists(true);
             }
@@ -94,11 +98,15 @@ const Post = () => {
           }
         })
     }
+    async function test() {
+      await splitNowPosition();
+      await fetchData();
+    }
 
     console.log(len);
-    fetchData();
+    // fetchData();
+    test();
     
-    splitNowPosition();
   }, []);
 
   const navigate = useNavigate();
