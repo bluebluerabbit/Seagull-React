@@ -82,12 +82,14 @@ const Post = () => {
             if (res.data.status == "success") {
               let data = JSON.parse(res.data.data)
               let tempListsData = []
-              
+
               for(let i=0;i<data.length;i++){
                 if(data[i].location.split(' ')[1] == splitNowPositionString){
                   tempListsData.push(data[i]);
                 }
               }
+              console.log("2")
+
               setLists(tempListsData);
 
               setListLength(res.data.data.length - 1);
@@ -147,6 +149,7 @@ const Post = () => {
         });
       }
     })
+    console.log("1")
   }
 
   const tagColorArray = ["bg-[#000AFF]", "bg-[#00C2FF]", "bg-[#E37A39]", "bg-[#FF0000]"];

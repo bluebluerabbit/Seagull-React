@@ -114,7 +114,7 @@ const Detail = () => {
             }
         }
 
-        await axios.post('http://localhost:3004/api/user/favorite', favoriteData
+        await axios.post('http://localhost:3004/api/user/favoriteS', favoriteData
         ).then((response) => {
             let res = response.data;
             if (res.status === "success") {
