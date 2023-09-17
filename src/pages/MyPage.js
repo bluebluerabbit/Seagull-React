@@ -5,6 +5,7 @@ import Nav from "../component/BottomNav";
 
 const MyPage = () => {
 
+    var userId = localStorage.getItem('id');
     var nickName = localStorage.getItem('id');
 
     // const keep = ["바보의 세계", "검은고양이", "청부살인 협동조합"]
@@ -15,24 +16,30 @@ const MyPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-          await axios.post('http://localhost:3004/api/user/favorites/list',{nickName})
-            .then((res) => {
-                console.log(res)
-              try {
-                if (res.data.status == "success") {
-                  let data = JSON.parse(res.data.data)
-                  setLists(data);
-                  setIsCallLists(true);
-                }
-              } catch {
-                return
-              }
-            })
+            await axios.post('http://localhost:3004/api/user/favorites/list', { userId })
+                .then((res) => {
+                    //console.log(res.data.data.msg)
+                    try {
+                        if (res.data.data.result == "true") {
+                            console.log(res.data.data.msg)
+                            //let list = JSON.parse(res.data.data.msg)
+                            setLists(JSON.parse(res.data.data.msg));
+                            console.log("aa")
+                            setIsCallLists(true);
+                        }
+                    } catch {
+                        return
+                    }
+                })
         }
-        fetchData();
-      }, []);
 
-    console.log("w-full m-auto animated-fade bg-white " + (keep.length > 0) ? "h-full" : "h-screen")
+        fetchData();
+        if(isCallLists){
+            console.log(keep.length)
+        }
+    }, []);
+
+    //console.log("w-full m-auto animated-fade bg-white " + (keep.length > 0) ? "h-full" : "h-screen")
 
     let keepLength = (keep.length > 0) ? "h-full" : "h-screen";
 
@@ -62,7 +69,7 @@ const MyPage = () => {
 
                 <div className="text-lg font-medium m-3 text-center">찜목록</div>
                 {
-                    keep.length == 0
+                    keep&&keep.length == 0
                         ?
                         <div>
                             <div className="justify-center items-center rounded-xl w-11/12 bg-slate-100 m-auto mt-4 text-l font-bold py-6">
@@ -82,7 +89,7 @@ const MyPage = () => {
                                 <div key={index}>
                                     <div className="flex justify-between rounded-xl w-11/12 bg-slate-100 items-center m-auto mt-4">
                                         <div className="text-xl font-bold px-6 my-4">
-                                            {item}
+                                            {item.TITLE}
                                         </div>
                                         <Heart className=" w-6 mr-5" />
                                     </div>
