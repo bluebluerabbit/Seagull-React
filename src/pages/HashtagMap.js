@@ -21,34 +21,6 @@ const { kakao } = window; // window 내 kakao 객체를 빼와서 사용
 // 카테고리별로 덮어씌울 행사 마커
 let markerArray = []
 
-// 행사 목록 요청 API 호출
-async function getEventInfoRequest(url, setter) {
-    await axios.get(url)
-        .then((response) => {
-            let res = response.data;
-            // 각 행사 데이터를 넣어줌
-            if (res.status === "success") {
-                let data = res.data;
-                console.log(JSON.parse(data));
-                setter(JSON.parse(data));
-            }
-            // console에 서버 오류임을 알림
-            else if (res.status === "error") {
-                let msg = res.msg;
-                console.log(msg);
-            }
-        })
-        .catch(() => {
-            console.log("클라이언트 오류 발생");
-        });
-}
-
-async function getEventInfo(setter, url, setEventStatus) {
-    setEventStatus(false);
-    await getEventInfoRequest('http://localhost:3004/api/event' + url, setter);
-    setEventStatus(true);
-}
-
 function setEventMarker(navigate, map, geocoder, data, markerImage) {
     if (markerArray.length > 0) {
         for (let i = 0; i < markerArray.length; i++) {
@@ -77,10 +49,11 @@ function setEventMarker(navigate, map, geocoder, data, markerImage) {
                         state: {
                             title: data[i].title,
                             location: data[i].location,
-                            duration: data[i].startDate + ' ~ ' + data[i].endDate,
-                            time: data[i].time,
+                            duration: data[i].st_dt + ' ~ ' + data[i].ed_dt,
+                            time: data[i].showtime,
                             price: data[i].price,
-                            src: data[i].src
+                            src: data[i].poster,
+                            theme: data[i].theme
                         }
                     });
                 });
@@ -107,28 +80,11 @@ const HashtagMap = () => {
     const location = useLocation();
     let hashtagInfo = { ...location.state }
 
-    /*
-        현재 선택한 카테고리 index
-        0 : 뮤지컬
-        1 : 연극
-        2 : 공연·전시
-        3 : 콘서트
-    */
-    let [selectedCategoryIndex, setselectedCategoryIndex] = useState(0);
-
     // 행사 목록 불러오기
-    let [musicalsData, setMusicalsData] = useState([]);
-    let [playsData, setPlaysData] = useState([]);
-    let [exhibitionsData, setExhibitionsData] = useState([]);
-    let [concertsData, setConcertsData] = useState([]);
+    let [eventData, setEventData] = useState(null);
 
     // 행사 목록 불러오기 성공 여부
     let [eventStatus, setEventStatus] = useState(false);
-
-    const categoryArray = ["뮤지컬", "연극", "공연·전시", "콘서트"];
-    const categoryURL = ["/musicals", "/plays", "/exhibitions", "/concerts"];
-    const categoryColorArray = ["bg-red-500", "bg-blue-600", "bg-green-500", "bg-yellow-400"];
-    const categoryFillColorArray = ["fill-red-500", "fill-blue-600", "fill-green-500", "fill-yellow-400"];
 
     const [map, setMap] = useState(null);
     const [geocoder, setGeocoder] = useState(null);
@@ -136,6 +92,36 @@ const HashtagMap = () => {
     // 현재 위치
     let [myLat, setMyLat] = useState(null);
     let [myLng, setMyLng] = useState(null);
+
+    useEffect(() => {
+        let hashtagCode = hashtagInfo.hashtagCode;
+        let config = {
+            themeCode: hashtagCode
+        }
+        
+        async function getHashtagEventList() {
+            await axios.post("http://localhost:3004/api/event/theme/list", config)
+            .then((response) => {
+                let res = response.data;
+                // 각 행사 데이터를 넣어줌
+                if (res.status === "success") {
+                    console.log(res.data)
+                    setEventStatus(true);
+                    setEventData(res.data)
+                }
+            })
+        }
+        getHashtagEventList();
+    }, [])
+
+    useEffect(() => {
+        if(eventData) {
+            setEventMarker(navigate, map, geocoder, eventData.filter(item => (item.category === "뮤지컬")), MarkerMusical);
+            setEventMarker(navigate, map, geocoder, eventData.filter(item => (item.category === "연극")), MarkerPlay);
+            setEventMarker(navigate, map, geocoder, eventData.filter(item => (item.category === "전시")), MarkerExhibition);
+            setEventMarker(navigate, map, geocoder, eventData.filter(item => (item.category === "콘서트")), MarkerConcert);
+        }
+    }, [eventStatus])
 
     // MAP SETTING Effect
     useEffect(() => {
@@ -178,14 +164,15 @@ const HashtagMap = () => {
 
     const callPanToMyPosition = () => { panToMyPosition(map) }
 
+
     return (
         <React.Fragment>
             {/* category */}
             <div className="flex justify-center items-center">
                 <div className="bg-white h-[80px] w-screen border-b flex justify-between items-center p-5 
-                sticky top-0 bg-white">
+                sticky top-0 bg-white z-40">
                     <Previous className="hover:cursor-pointer hover:scale-110 transition"
-                        onClick={() => navigate('/map')}
+                        onClick={() => navigate(-1)}
                     />
                     <div>
                         <div className="text-lg font-medium">

@@ -45,7 +45,7 @@ function HeartStatus({ setIsibleHeartStatus }) {
     );
 }
 
-function HashTag({ hashtagStrings }) {
+function HashTag({ hashtagStrings, splitThemeArray }) {
     let hashtag = useSelector((state) => (state.hashtag.hashtagName));
     console.log(hashtag);
 
@@ -69,6 +69,7 @@ function HashTag({ hashtagStrings }) {
                                 navigate('/hashtag-map', {
                                     state: {
                                         hashtagName: hashtagStrings[index],
+                                        hashtagCode: splitThemeArray[index],
                                         hashtagBackgroundColor: hashtag[hashtagStrings[index]].bg,
                                         hashtagTextColor: hashtag[hashtagStrings[index]].text
                                     }
@@ -88,13 +89,31 @@ function HashTag({ hashtagStrings }) {
 const Detail = () => {
     let [heart, setHeart] = useState(false);
     let [isVisibleHeartStatus, setIsibleHeartStatus] = useState(false);
-
-    // 해시태그 배열
-    let hashtagStrings = ["잔잔한", "가족", "혼자", "겨울", "서예", "K-POP", "사진"]
-
+    
     const navigate = useNavigate();
     const location = useLocation();
-    let eventInfo = { ...location.state }
+    let eventInfo = { ...location.state };
+
+    // api 실패의 경우 추가 필요
+    let [hashtagStrings, setHashtagStrings] = useState(["잔잔한", "가족", "혼자", "겨울", "서예", "K-POP", "사진"]);
+    let [splitThemeArray, setSplitThemeArray] = useState((eventInfo.theme).split(','));
+
+    useEffect(() => {
+        let themeArray = { themeArray: splitThemeArray };
+        console.log(splitThemeArray)
+        
+        async function themeArrayToString() {
+            await axios.post('http://localhost:3004/api/event/theme', themeArray)
+            .then((response) => {
+                let res = response.data;
+                if (res.status === "success") {
+                    setHashtagStrings(res.data.themeArray);
+                }
+            })
+        }
+
+        themeArrayToString()
+    }, [])
 
     async function addFavorites() {
         setIsibleHeartStatus(true);
@@ -109,12 +128,14 @@ const Detail = () => {
                     endDate: eventInfo.endDate,
                     time: eventInfo.time,
                     price: eventInfo.price,
-                    src: eventInfo.src
+                    src: eventInfo.src,
+                    // theme 추가
+                    theme: eventInfo.theme
                 }
             }
         }
 
-        await axios.post('http://localhost:3004/api/user/favoriteS', favoriteData
+        await axios.post('http://localhost:3004/api/user/favorites', favoriteData
         ).then((response) => {
             let res = response.data;
             if (res.status === "success") {
@@ -164,7 +185,7 @@ const Detail = () => {
                         src={eventInfo.src} />
 
 
-                    <HashTag hashtagStrings={hashtagStrings} />
+                    <HashTag hashtagStrings={hashtagStrings} splitThemeArray={splitThemeArray} />
 
                     {/* event title */}
                     <div className="text-2xl my-5 font-bold">
