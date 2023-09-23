@@ -42,14 +42,17 @@ function setEventMarker(navigate, map, geocoder, data, markerImage) {
                 // 지도 중심을 마커로 이동
                 // map.setCenter(coords);
 
+
                 // 마커 클릭이벤트 등록
                 kakao.maps.event.addListener(marker, 'click', function () {
+                    console.log(data[i]);
                     // 클릭한 마커가 갖고 있는 행사 정보를 함께 보내는 라우팅
                     navigate('/detail', {
                         state: {
                             title: data[i].title,
                             location: data[i].location,
-                            duration: data[i].st_dt + ' ~ ' + data[i].ed_dt,
+                            startDate: data[i].st_dt,
+                            endDate: data[i].ed_dt,
                             time: data[i].showtime,
                             price: data[i].price,
                             src: data[i].poster,
@@ -167,10 +170,10 @@ const HashtagMap = () => {
 
     return (
         <React.Fragment>
-            {/* category */}
+            {/* hashtag info */}
             <div className="flex justify-center items-center">
-                <div className="bg-white h-[80px] w-screen border-b flex justify-between items-center p-5 
-                sticky top-0 bg-white z-40">
+                <div className="bg-white h-[80px] w-full max-w-[640px] border-b flex justify-between items-center p-5 
+                fixed top-0 bg-white z-40 " >
                     <Previous className="hover:cursor-pointer hover:scale-110 transition"
                         onClick={() => navigate(-1)}
                     />

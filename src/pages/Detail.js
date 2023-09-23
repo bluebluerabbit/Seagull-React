@@ -93,6 +93,7 @@ const Detail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     let eventInfo = { ...location.state };
+    console.log(eventInfo)
 
     // api 실패의 경우 추가 필요
     let [hashtagStrings, setHashtagStrings] = useState(["잔잔한", "가족", "혼자", "겨울", "서예", "K-POP", "사진"]);
@@ -129,7 +130,6 @@ const Detail = () => {
                     time: eventInfo.time,
                     price: eventInfo.price,
                     src: eventInfo.src,
-                    // theme 추가
                     theme: eventInfo.theme
                 }
             }
@@ -157,7 +157,7 @@ const Detail = () => {
                 <div className="flex justify-between items-center p-5 
                 sticky top-0 bg-white">
                     <Previous className="hover:cursor-pointer hover:scale-110 transition"
-                        onClick={() => navigate('/map')}
+                        onClick={() => navigate(-1)}
                     />
                     <span className="text-lg font-medium">
                         상세 정보
@@ -209,7 +209,7 @@ const Detail = () => {
                             📌 기간
                         </div>
                         <div className="font-bold">
-                            {eventInfo.duration}
+                            {eventInfo.startDate} ~ {eventInfo.endDate}
                         </div>
                     </div>
 

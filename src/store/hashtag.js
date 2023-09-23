@@ -84,11 +84,11 @@ let hashtag_ = {
         bg: "bg-[#FF6666]"
     },
     "K-POP": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#FF0099]"
     },
     "ROCK": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#000000]"
     },
     "발라드": {
@@ -100,15 +100,15 @@ let hashtag_ = {
         bg: "bg-[#FF7EB4]"
     },
     "재즈": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#7D7FB2]"
     },
     "소울": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#A259FF]"
     },
     "R&B": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#866565]"
     },
     "힙합": {
@@ -120,15 +120,15 @@ let hashtag_ = {
         bg: "bg-[#53FF79]"
     },
     "연극": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#000AFF]"
     },
     "뮤지컬": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#FF0000]"
     },
     "클래식": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#4A4A4A]"
     },
     "전통예술": {
@@ -148,7 +148,7 @@ let hashtag_ = {
         bg: "bg-[#F16161]"
     },
     "복합": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#A8A8A8]"
     },
     "서커스/마술": {
@@ -160,7 +160,7 @@ let hashtag_ = {
         bg: "bg-[#DCB734]"
     },
     "한국화": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#CA579C]"
     },
     "양화": {
@@ -176,11 +176,11 @@ let hashtag_ = {
         bg: "bg-[#F17886]"
     },
     "사진": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#929292]"
     },
     "판화": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#555555]"
     },
     "수채화": {
@@ -196,12 +196,12 @@ let hashtag_ = {
         bg: "bg-[#F2F2F2]"
     },
     "서예": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#4A5969]"
     },
     // 상태가 이상한데?
     "기타": {
-        text: "text-[#FFFFFF]",
+        text: "text-white",
         bg: "bg-[#1F83EB]"
     }
 }
