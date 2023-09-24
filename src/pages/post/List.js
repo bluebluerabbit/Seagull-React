@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import _ from "lodash";
 
 import { ReactComponent as Write } from "../../img/icon/write.svg";
 import { ReactComponent as Position } from "../../img/icon/position.svg";
@@ -10,6 +11,7 @@ import LocationMarker from "../../img/icon/location_select.svg";
 
 import Nav from "../../component/BottomNav";
 import SimpleLoading from "../../component/SimpleLoading";
+import SelectLocation from "../../component/SelectLocation";
 
 // 스크립트로 kakao map api를 심어서 가져오면, window 전역 객체에 들어가게 된다.
 // 함수형 컴포넌트에서는 바로 인식하지 못하므로, kakao 객체를 인지시키고자 상단에 선언해둔다.
@@ -72,44 +74,45 @@ const Post = () => {
   const [lists, setLists] = useState([]);
   const [len, setListLength] = useState();
   const [isCallLists, setIsCallLists] = useState(false);
-  const [splitNowPositionString, setSplitNowPositionString] = useState("");
+  const [splitNowPositionString, setSplitNowPositionString] = useState(null);
+
+  // 위치 선택 컴포넌트 toggle
+  const [selectLocationToggle, setSelectLocationToggle] = useState(false);
+  // 선택된 위치 주소 문자열
+  const [location, setLocation] = useState("");
+  // 위치 선택 종료 여부
+  const [selectLocationDone, setSelectLocationDone] = useState(false);
+
+  // 글 목록 불러오기
+  const fetchData = async () => {
+    try {
+      await axios.get('http://localhost:3004/api/post/lists')
+      .then(async (response) => {
+        if (response.data.status === "success") {
+          const data = JSON.parse(response.data.data);
+          const filteredListsData = await data.filter(item => item.location.split(' ')[1] === splitNowPositionString);
+  
+          await setLists(filteredListsData);
+          await setListLength(filteredListsData.length - 1);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const postLoad = async () => {
+    await setIsCallLists(false);
+    if (location !== "") await splitNowPosition(false);
+    else await splitNowPosition(true);
+    await fetchData();
+    await setIsCallLists(true);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await axios.get('http://localhost:3004/api/post/lists')
-        .then((res) => {
-          try {
-            if (res.data.status == "success") {
-              let data = JSON.parse(res.data.data)
-              let tempListsData = []
+    postLoad();
+  }, [location, selectLocationToggle, splitNowPositionString])
 
-              for(let i=0;i<data.length;i++){
-                if(data[i].location.split(' ')[1] == splitNowPositionString){
-                  tempListsData.push(data[i]);
-                }
-              }
-              console.log("2")
-
-              setLists(tempListsData);
-
-              setListLength(res.data.data.length - 1);
-              setIsCallLists(true);
-            }
-          } catch {
-            return
-          }
-        })
-    }
-    async function test() {
-      await splitNowPosition();
-      await fetchData();
-    }
-
-    console.log(len);
-    // fetchData();
-    test();
-    
-  }, []);
 
   const navigate = useNavigate();
 
@@ -119,9 +122,9 @@ const Post = () => {
 
   // 현재 위치를 좌표 값으로 받아와 주소로 변환한 후, '구' 단위를 추출함
   // 저장된 '구' 단위 문자열 : splitNowPositionString
-  function splitNowPosition() {
+  function splitNowPosition(isNowPosition) {
     kakao.maps.load(() => {
-      if (navigator.geolocation) {
+      if (navigator.geolocation && isNowPosition) {
         navigator.geolocation.getCurrentPosition((position) => {
           let lat = position.coords.latitude, // 위도
             lng = position.coords.longitude; // 경도
@@ -148,8 +151,12 @@ const Post = () => {
           });
         });
       }
+      else {
+        // ex) 부산광역시 XXX구 XXX로 XX번길 XX -> 공백 단위로 split하여 두번째 요소를 가져옴
+        if (location) setSplitNowPositionString(location.split(' ')[1]);
+        console.log(splitNowPositionString);
+      }
     })
-    console.log("1")
   }
 
   const tagColorArray = ["bg-[#000AFF]", "bg-[#00C2FF]", "bg-[#E37A39]", "bg-[#FF0000]"];
@@ -157,89 +164,102 @@ const Post = () => {
 
   return (
     <React.Fragment>
-      <div className="animated-fade h-full bg-white
-      flex flex-col drop-shadow-bg">
-        <div className="sticky top-0 bg-white relative z-9999">
-          <div className="flex justify-between items-center">
-            <span className="text-lg font-medium m-4">
-              {splitNowPositionString}
-            </span>
-            <Position className="drop-shadow-position w-12 m-4" />
-          </div>
-          <hr className="mx-2" />
-
-          {
-            isCallLists ?
-              null :
-              <SimpleLoading />
-          }
-
-        </div>
-
-
-        {
-          lists.map((item, index) => {
-            return (
-              <div>
-                <div key={index} className="flex flex-col w-11/12 m-auto">
-                  <div className="flex justify-between my-2">
-                    <div>
-                      {/* title */}
-                      <div className="text-l font-bold mb-1">
-                        {item.title}
-                      </div>
-
-                      {/* location */}
-                      <div className="flex text-xs items-center">
-                        <Location className="w-3" />
-                        <span className="ml-1">{item.location}</span>
-                      </div>
-
-                      {/* date */}
-                      <div className="text-xs mt-1" >
-                        {item.date}
-                      </div>
-                    </div>
-                    <div className="rounded-full border w-auto text-xs font-light flex justify-start items-center h-6 mt-2 pl-1 pr-3">
-                      <div className={tagColorArray[item.tag] + ' w-2.5 h-2.5 m-1 rounded-full'} />
-                      {tagTextArray[item.tag]}
-                    </div>
-                  </div>
-
-                  <div className="flex justify-center items-center w-full h-48 place-center">
-                    <PostMap postId={item.title} postLocation={item.location} />
-                  </div>
-
-                  <div className="text-sm mt-2">
-                    {item.content}
-                  </div>
-                  <br />
+      {
+        selectLocationToggle
+          ?
+          <SelectLocation className="fixed left-0 top-0 right-0"
+            setLocation={setLocation}
+            setSelectLocationToggle={setSelectLocationToggle} />
+          :
+          <>
+            <div className={`animated-fade h-full bg-white
+      flex flex-col drop-shadow-bg ${len > 0 ? "h-full" : "h-screen"}`}>
+              <div className="sticky top-0 bg-white relative z-9999">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-medium m-4">
+                    {splitNowPositionString}
+                  </span>
+                  <Position className="drop-shadow-position w-12 m-4 hover:cursor-pointer hover:scale-110 transition
+                  active:brightness-75
+                  active:scale-110"
+                  onClick={() => setSelectLocationToggle(!selectLocationToggle)} />
                 </div>
+                <hr className="mx-2" />
 
-                <div className={len == index ? null : 'w-full border-b-2 border-d9d9d9'} />
+                {
+                  isCallLists ?
+                    null :
+                    <SimpleLoading />
+                }
 
               </div>
-            )
-          })
-        }
 
-        <div className="h-[60px] sm:h-[120px]"></div>
-      </div>
 
-      <div className="flex justify-end items-center">
+              {
+                lists.map((item, index) => {
+                  return (
+                    <div>
+                      <div key={index} className="flex flex-col w-11/12 m-auto">
+                        <div className="flex justify-between my-2">
+                          <div>
+                            {/* title */}
+                            <div className="text-l font-bold mb-1">
+                              {item.title}
+                            </div>
 
-        <Write className="fixed bottom-0 z-40
+                            {/* location */}
+                            <div className="flex text-xs items-center">
+                              <Location className="w-3" />
+                              <span className="ml-1">{item.location}</span>
+                            </div>
+
+                            {/* date */}
+                            <div className="text-xs mt-1" >
+                              {item.date}
+                            </div>
+                          </div>
+                          <div className="rounded-full border w-auto text-xs font-light flex justify-start items-center h-6 mt-2 pl-1 pr-3">
+                            <div className={tagColorArray[item.tag] + ' w-2.5 h-2.5 m-1 rounded-full'} />
+                            {tagTextArray[item.tag]}
+                          </div>
+                        </div>
+
+                        <div className="flex justify-center items-center w-full h-48 place-center">
+                          <PostMap postId={item.title} postLocation={item.location} />
+                        </div>
+
+                        <div className="text-sm mt-2">
+                          {item.content}
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className={len == index ? null : 'w-full border-b-2 border-d9d9d9'} />
+
+                    </div>
+                  )
+                })
+              }
+
+              <div className="h-[60px] sm:h-[120px]"></div>
+            </div>
+
+            <div className="flex justify-end items-center">
+
+              <Write className="fixed bottom-0 z-40
           mb-12 sm:mb-20 -mr-3 self-end
           w-[120px] h-[120px]
           sm:w-[150px] sm:h-[150px]
           hover:cursor-pointer hover:scale-110 transition
           active:brightness-75
           active:scale-110"
-          onClick={write} />
+                onClick={write} />
 
-      </div>
+            </div>
 
-      <Nav />
+            <Nav />
+          </>
+      }
 
     </React.Fragment>
   );

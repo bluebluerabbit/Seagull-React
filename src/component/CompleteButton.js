@@ -6,7 +6,7 @@ import React from "react";
 const CompleteButton = ({_event, content, _class}) => {
     return (
         <React.Fragment>
-            <div className={"max-w-[600px] flex justify-center align-center m-auto rounded-2xl border-0 py-4 bg-main " + _class}
+            <div className={"max-w-[600px] flex justify-center align-center m-auto rounded-2xl border-0 py-4 bg-main hover:cursor-pointer transition hover:brightness-75" + _class}
                 onClick={_event}>
                 <p className="font-bold text-xl text-white">{content}</p>
             </div>

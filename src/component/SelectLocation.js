@@ -13,7 +13,7 @@ function searchDetailAddrFromCoords(geocoder, coords, callback) {
 }
 
 // 컴포넌트 생성 시, 지도를 움직이지 않았을 때도 주소 문자열을 가져오도록 함
-function setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocation) {
+function setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocation, first) {
     searchDetailAddrFromCoords(geocoder, centerLatlng, function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
             // 도로명주소 or 지번주소 반환
@@ -21,7 +21,7 @@ function setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocati
                 result[0].road_address.address_name :
                 result[0].address.address_name;
 
-            setLocation(detailAddr);
+            // setLocation(detailAddr);
             setNowLocation(detailAddr);
         }
     });
@@ -34,6 +34,12 @@ const SelectLocation = ({ setLocation, setSelectLocationToggle }) => {
     // 현재 위치
     let [myLat, setMyLat] = useState(null);
     let [myLng, setMyLng] = useState(null);
+
+    const clickComplete = () => {
+        console.log(nowLocation) 
+        setLocation(nowLocation)
+        setSelectLocationToggle(false)
+    }
 
     const mapContainer = useRef(null);
 
@@ -79,7 +85,7 @@ const SelectLocation = ({ setLocation, setSelectLocationToggle }) => {
             marker.setPosition(centerLatlng);
             marker.setMap(map);
 
-            setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocation);
+            setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocation, true);
 
             // feat: 중심 좌표가 바뀔 때마다 trigger
             kakao.maps.event.addListener(map, 'center_changed', function () {
@@ -88,7 +94,7 @@ const SelectLocation = ({ setLocation, setSelectLocationToggle }) => {
                 marker.setPosition(centerLatlng);
                 marker.setMap(map);
 
-                setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocation);
+                setLocationForAddress(geocoder, setLocation, centerLatlng, setNowLocation, false);
             });
         })
 
@@ -101,11 +107,11 @@ const SelectLocation = ({ setLocation, setSelectLocationToggle }) => {
                 <div ref={mapContainer} id="map" className="w-full h-screen"></div>
 
                 {/* complete button */}
-                <button className="bg-[#1F83EB] h-[60px] w-5/6 
+                <button className="bg-[#1F83EB] h-[60px] w-5/6 max-w-[600px]
             z-50 fixed bottom-5
             rounded-xl
             flex flex-col items-center justify-center m-auto"
-                    onClick={() => setSelectLocationToggle(false)}>
+                    onClick={() => clickComplete()}>
                     <div className="flex items-center justify-center
                 text-white font-light text-sm">
                         {nowLocation}

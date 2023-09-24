@@ -22,6 +22,8 @@ const Write = () => {
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
 
+  const [writeStatus, setWriteStatus] = useState("");
+
   function getTitle(event) {
     setTitle(event.target.value)
   }
@@ -52,16 +54,20 @@ const Write = () => {
       content: content
     }
 
-    await axios.post("http://localhost:3004/api/post/write", {
-      Writedata
-    })
-      .then((res) => {
-        try {
-          navigate(-1)
-        } catch (error) {
-          return
-        }
+    try {
+      await axios.post("http://localhost:3004/api/post/write", {
+        Writedata
       })
+        .then((response) => {
+          console.log(response.data)
+          let res = response.data;
+          if (res.status === "success") navigate(-1);
+          else if (res.status === "fail") setWriteStatus("모두 입력해 주세요.");
+        })
+
+    } catch (error) {
+      return
+    }
   }
 
   const tagColorArray = ["bg-[#000AFF]", "bg-[#00C2FF]", "bg-[#E37A39]", "bg-[#FF0000]"];
@@ -81,7 +87,7 @@ const Write = () => {
             <React.Fragment>
               <div className="sticky top-0 bg-white">
                 <div className="flex justify-center items-center p-5">
-                  <Previous className="absolute left-0 ml-5" onClick={() => navigate(-1)} />
+                  <Previous className="absolute left-0 ml-5 hover:cursor-pointer hover:scale-110 transition" onClick={() => navigate(-1)} />
                   <span className="text-lg font-medium">
                     정보 작성
                   </span>
@@ -107,9 +113,14 @@ const Write = () => {
 
                   <div className="flex">
                     <div className="bg-white border border-slate-300 rounded-2xl w-full py-2 h-[46px] px-4">
-                      {location}
+                      {
+                        location ?
+                          location :
+                          <span className="text-gray-500 text-sm">
+                            위치를 선택해주세요.
+                          </span>}
                     </div>
-                    <Position className="drop-shadow-position w-12 ml-2 mt-0.5"
+                    <Position className="drop-shadow-position w-12 ml-2 mt-0.5 hover:cursor-pointer hover:scale-110 transition"
                       onClick={() => setSelectLocationToggle(!selectLocationToggle)} />
                   </div>
                 </div>
@@ -118,7 +129,7 @@ const Write = () => {
                   {
                     tagTextArray.map((tagText, idx) => {
                       return (
-                        <button className={tag==idx?"flex justify-start rounded-full font-light border w-auto m-2 p-0.5  bg-slate-200":"flex justify-start rounded-full font-light border w-auto m-2 p-0.5"}
+                        <button className={tag == idx ? "flex justify-start rounded-full font-light border w-auto m-2 p-0.5  bg-slate-200" : "flex justify-start rounded-full font-light border w-auto m-2 p-0.5 hover:cursor-pointer hover:scale-110 transition active:brightness-75 active:scale-110"}
                           onClick={() => setTag(idx)}>
 
                           <div className={tagColorArray[idx] + " w-2.5 h-2.5 my-auto mr-1 ml-2 rounded-full"} />
@@ -136,9 +147,13 @@ const Write = () => {
                   <div className="text-l mb-2 font-light">
                     내용
                   </div>
-                  
-                  <textarea className=" bg-white border border-slate-300 h-32 w-full rounded-2xl focus:outline-none p-4"
+
+                  <textarea className=" bg-white border border-slate-300 h-32 w-full rounded-xl focus:outline-none p-4"
                     onChange={getContent} />
+                </div>
+
+                <div className="flex items-center justify-center text-red-500 mb-4 transition animated-fade">
+                  {writeStatus}
                 </div>
 
                 <CompleteButton content="작성 완료" _event={postWrite} />
