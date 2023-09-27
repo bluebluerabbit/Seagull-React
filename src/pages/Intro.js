@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { ReactComponent as Logo } from "../img/icon/logo.svg";
 
@@ -7,6 +8,24 @@ const Intro = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        for (var i=0; i<localStorage.length; i++){
+            const key = window.localStorage.key(i)
+            if (key == "userToken" || key == "kakaoLoginJWT" || key == "naverLoginJWT"){
+                const value = window.localStorage.getItem(key)
+                // console.log(value)
+                axios.post("http://localhost:3004/api/auth/status", {
+                    userToken : value,
+                }).then((req) => {
+                    const response = req.data.msg
+                    if (response == "invalid"){
+                        // console.log(key)
+                        localStorage.removeItem(key)
+                    }
+                })
+            }
+        }
+
         const timeout = setTimeout(() => {
             navigate('/login');
         }, 3500);
