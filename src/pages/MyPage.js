@@ -18,13 +18,10 @@ const MyPage = () => {
         const fetchData = async () => {
             await axios.post('http://localhost:3004/api/user/favorites/list', { userId })
                 .then((res) => {
-                    //console.log(res.data.data.msg)
                     try {
-                        if (res.data.data.result == "true") {
+                        if (res.data.data.result === "true") {
                             console.log(res.data.data.msg)
-                            //let list = JSON.parse(res.data.data.msg)
-                            setLists(JSON.parse(res.data.data.msg));
-                            console.log("aa")
+                            setLists(res.data.data.msg);
                             setIsCallLists(true);
                         }
                     } catch {
@@ -41,11 +38,11 @@ const MyPage = () => {
 
     //console.log("w-full m-auto animated-fade bg-white " + (keep.length > 0) ? "h-full" : "h-screen")
 
-    let keepLength = (keep.length > 0) ? "max-sm:h-full" : "max-sm:h-screen";
+    let keepLength = (keep.length > 0) ? "h-full" : "h-screen";
 
     return (
         <React.Fragment>
-            <div className={`w-full m-auto animated-fade bg-white drop-shadow-bg sm:h-screen ${keepLength}`}>
+            <div className={"w-full m-auto animated-fade bg-white drop-shadow-bg sm:h-screen max-sm:" + keepLength}>
 
                 <div className="sticky top-0 bg-white">
                     <div className="flex justify-center items-center p-5">
