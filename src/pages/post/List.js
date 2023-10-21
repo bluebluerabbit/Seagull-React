@@ -194,16 +194,16 @@ const Post = () => {
 
               </div>
 
-
+                
               {
                 lists.map((item, index) => {
                   return (
                     <div>
                       <div key={index} className="flex flex-col w-11/12 m-auto">
                         <div className="flex justify-between my-2">
-                          <div>
+                          <div className="w-2/3">
                             {/* title */}
-                            <div className="text-l font-bold mb-1">
+                            <div className="font-bold mb-1 text-ellipsis overflow-hidden break-all ">
                               {item.title}
                             </div>
 
@@ -218,7 +218,8 @@ const Post = () => {
                               {item.date}
                             </div>
                           </div>
-                          <div className="rounded-full border w-auto text-xs font-light flex justify-start items-center h-6 mt-2 pl-1 pr-3">
+
+                          <div className="rounded-full border w-auto text-xs font-light flex justify-start items-center h-6 mt-2 pl-1 pr-3 w-1/3">
                             <div className={tagColorArray[item.tag] + ' w-2.5 h-2.5 m-1 rounded-full'} />
                             {tagTextArray[item.tag]}
                           </div>
