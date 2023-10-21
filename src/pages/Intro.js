@@ -14,7 +14,7 @@ const Intro = () => {
             if (key == "userToken" || key == "kakaoLoginJWT" || key == "naverLoginJWT"){
                 const value = window.localStorage.getItem(key)
                 // console.log(value)
-                axios.post("http://localhost:3004/api/auth/status", {
+                axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/auth/status", {
                     userToken : value,
                 }).then((req) => {
                     const response = req.data.msg

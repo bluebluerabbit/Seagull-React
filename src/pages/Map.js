@@ -44,7 +44,7 @@ async function getEventInfoRequest(url, setter) {
 
 async function getEventInfo(setter, url, setEventStatus) {
     setEventStatus(false);
-    await getEventInfoRequest('http://localhost:3004/api/event' + url, setter);
+    await getEventInfoRequest('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/event' + url, setter);
     setEventStatus(true);
 }
 

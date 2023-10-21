@@ -28,7 +28,7 @@ const SignIn = () => {
   useEffect(() => {
     //console.log(validToken)
     if (userToken != null) {
-      axios.post('http://localhost:3004/api/login/status', {
+      axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/status', {
         userToken
       }).then((res) => {
         console.log(res.data)
@@ -43,7 +43,7 @@ const SignIn = () => {
       })
     }
     if (kakaoAccessToken != null) {
-      axios.post('http://localhost:3004/api/login/kakao/status', {
+      axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/kakao/status', {
         kakaoAccessToken
       }).then((res) => {
         console.log(res.data)
@@ -56,7 +56,7 @@ const SignIn = () => {
       })
     }
     if (naverAccessToken != null) {
-      axios.post("http://localhost:3004/api/login/naver/status", {
+      axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/naver/status", {
         naverAccessToken
       }).then((res) => {
         console.log(res.data)
@@ -95,7 +95,7 @@ const SignIn = () => {
     const ciphertext = crypto.AES.encrypt(pw, 'culture').toString();
     var _id = id.replace(/(\s*)/g,'')
     console.log(_id.length)
-    axios.post("http://localhost:3004/api/login/", {
+    axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/", {
       userId: _id,
       userPw: ciphertext,
     }).then((req) => {

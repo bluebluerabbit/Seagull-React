@@ -86,7 +86,7 @@ const Post = () => {
   // 글 목록 불러오기
   const fetchData = async () => {
     try {
-      await axios.get('http://localhost:3004/api/post/lists')
+      await axios.get('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/post/lists')
       .then(async (response) => {
         if (response.data.status === "success") {
           const data = JSON.parse(response.data.data);

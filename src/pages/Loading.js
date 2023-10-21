@@ -24,7 +24,7 @@ const Loading = () => {
         var userType = localStorage.getItem("userType");
         var userId = localStorage.getItem("id");
 
-        axios.post("http://localhost:3004/api/signup/nickname/status", {
+        axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/signup/nickname/status", {
             userType : userType,
             userId : userId
         }).then((req) => {

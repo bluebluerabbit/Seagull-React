@@ -103,7 +103,7 @@ const HashtagMap = () => {
         }
         
         async function getHashtagEventList() {
-            await axios.post("http://localhost:3004/api/event/theme/list", config)
+            await axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/event/theme/list", config)
             .then((response) => {
                 let res = response.data;
                 // 각 행사 데이터를 넣어줌

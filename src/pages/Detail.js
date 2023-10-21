@@ -104,7 +104,7 @@ const Detail = () => {
         console.log(splitThemeArray)
         
         async function themeArrayToString() {
-            await axios.post('http://localhost:3004/api/event/theme', themeArray)
+            await axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/event/theme', themeArray)
             .then((response) => {
                 let res = response.data;
                 if (res.status === "success") {
@@ -135,7 +135,7 @@ const Detail = () => {
             }
         }
 
-        await axios.post('http://localhost:3004/api/user/favorites', favoriteData
+        await axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/user/favorites', favoriteData
         ).then((response) => {
             let res = response.data;
             if (res.status === "success") {

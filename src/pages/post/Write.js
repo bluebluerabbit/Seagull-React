@@ -55,7 +55,7 @@ const Write = () => {
     }
 
     try {
-      await axios.post("http://localhost:3004/api/post/write", {
+      await axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/post/write", {
         Writedata
       })
         .then((response) => {

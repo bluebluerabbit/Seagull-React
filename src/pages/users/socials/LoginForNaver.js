@@ -16,7 +16,7 @@ const LoginForNaver = () => {
     },[])
 
     const do_Login = () => {
-        axios.post("http://localhost:3004/api/login/naver",{
+        axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/naver",{
             code : loginCode,
             state : stateCode,
         }).then((req) => {

@@ -16,7 +16,7 @@ const MyPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await axios.post('http://localhost:3004/api/user/favorites/list', { userId })
+            await axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/user/favorites/list', { userId })
                 .then((res) => {
                     try {
                         if (res.data.data.result === "true") {

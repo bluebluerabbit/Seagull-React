@@ -24,7 +24,7 @@ const RegisterNickname = () => {
 
             console.log(userId)
 
-            axios.post('http://localhost:3004/api/signup/nickname/', {
+            axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/signup/nickname/', {
                 userType: userType,
                 userId: userId,
                 nickname: nickname
