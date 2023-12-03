@@ -10,16 +10,6 @@ jobs:
     container: pandoc/latex
     steps:
       - uses: actions/checkout@v2
-      - name: Pushes to another repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.AUTO_TOKEN }}
-        with:
-          source-directory: '.'
-          destination-github-username: 'bluebluerabbit'
-          destination-repository-name: 'Seagull-React'
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
-          target-branch: main
       - name: Generate Environment Variables File for Production
         run: |
           echo "REACT_APP_BACK_API_URL=$REACT_APP_BACK_API_URL" >> .env.production
@@ -33,5 +23,15 @@ jobs:
           REACT_APP_KAKAO_REST_API_KEY: ${{ secrets.REACT_APP_KAKAO_REST_API_KEY }}
           REACT_APP_NAVER_CLIENT_ID: ${{ secrets.REACT_APP_NAVER_CLIENT_ID }}
           REACT_APP_NAVER_CLIENT_SECRET: ${{ secrets.REACT_APP_NAVER_CLIENT_SECRET }}
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.AUTO_TOKEN }}
+        with:
+          source-directory: '.'
+          destination-github-username: 'bluebluerabbit'
+          destination-repository-name: 'Seagull-React'
+          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+          target-branch: main
       - name: Test get variable exported by push-to-another-repository
         run: echo $DESTINATION_CLONED_DIRECTORY
