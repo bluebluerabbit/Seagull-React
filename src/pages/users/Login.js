@@ -23,12 +23,11 @@ const SignIn = () => {
   const userToken = localStorage.getItem("userToken")
   const kakaoAccessToken = localStorage.getItem('kakaoLoginJWT')
   const naverAccessToken = localStorage.getItem('naverLoginJWT')
-  const client_id = '432961785509-qqi0ut13397irei6m61up42os7bc59t3.apps.googleusercontent.com'
 
   useEffect(() => {
     //console.log(validToken)
     if (userToken != null) {
-      axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/status', {
+      axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/login/status`, {
         userToken
       }).then((res) => {
         console.log(res.data)
@@ -43,7 +42,7 @@ const SignIn = () => {
       })
     }
     if (kakaoAccessToken != null) {
-      axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/kakao/status', {
+      axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/login/kakao/status`, {
         kakaoAccessToken
       }).then((res) => {
         console.log(res.data)
@@ -56,7 +55,7 @@ const SignIn = () => {
       })
     }
     if (naverAccessToken != null) {
-      axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/naver/status", {
+      axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/login/naver/status`, {
         naverAccessToken
       }).then((res) => {
         console.log(res.data)
@@ -95,7 +94,7 @@ const SignIn = () => {
     const ciphertext = crypto.AES.encrypt(pw, 'culture').toString();
     var _id = id.replace(/(\s*)/g,'')
     console.log(_id.length)
-    axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/", {
+    axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/login/`, {
       userId: _id,
       userPw: ciphertext,
     }).then((req) => {
@@ -113,16 +112,16 @@ const SignIn = () => {
     })
   }
 
-  const Rest_api_key = 'e6c2fe139670b147caaf750b558a4750'
-  const redirect_uri = 'http://localhost:3000/login/kakao'
+  const Rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY
+  const redirect_uri = 'https://busan-seagull.vercel.app/login/kakao'
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+  
   function loginForKakao() {
     window.location.href = kakaoURL
   }
 
-
-  const naver_client_id = 'o9JmjRrP1GmmANohGaH1'
-  const callback_uri = 'http://localhost:3000/login/naver'
+  const naver_client_id = process.env.REACT_APP_NAVER_CLIENT_ID
+  const callback_uri = 'https://busan-seagull.vercel.app/login/naver'
   const naverURL = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + naver_client_id + '&redirect_uri=' + encodeURI(callback_uri) + '&state=' + Math.random().toString(36).substr(3, 14);
 
   function loginForNaver() {

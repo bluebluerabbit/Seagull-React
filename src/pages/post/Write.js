@@ -55,7 +55,7 @@ const Write = () => {
     }
 
     try {
-      await axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/post/write", {
+      await axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/post/write`, {
         Writedata
       })
         .then((response) => {

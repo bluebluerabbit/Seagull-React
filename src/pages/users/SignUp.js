@@ -72,7 +72,7 @@ const Login = () => {
     function checkValidId(){
         console.log(id)
         console.log(saveId)
-        axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/signup/check/id/valid',{
+        axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/signup/check/id/valid`,{
             userId : id,
         }).then((req) => {
             if (req.data.status == 'success'){
@@ -99,7 +99,7 @@ const Login = () => {
     function complete(){
         if(passwordMatch){
             const ciphertextPw = crypto.AES.encrypt(password, 'culture').toString();
-            axios.post("ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/signup",{
+            axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/signup`,{
                 userId : id,
                 userPw : ciphertextPw,
             }).then((req) => {

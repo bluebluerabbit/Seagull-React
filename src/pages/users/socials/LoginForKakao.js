@@ -15,7 +15,7 @@ const LoginForKakao = () => {
     }, [])
 
     const do_Login = () => {
-        axios.post('ec2-44-201-170-157.compute-1.amazonaws.com:3004/api/login/kakao',{
+        axios.post(`${process.env.REACT_APP_BACK_API_URL}/api/login/kakao`,{
             code : loginCode
         })
         .then((req) => {
