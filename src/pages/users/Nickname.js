@@ -42,7 +42,7 @@ const RegisterNickname = () => {
             <div className="flex flex-col justify-center items-center
              px-4
             bg-white h-screen">
-                <Logo className="w-20 h-20" />
+                <Logo className="mt-[30vh] w-20 h-20" />
                 <div className="text-center color-[#4B4B4B] font-light text-lg my-3">
                     사용할 닉네임을 <br />
                     입력해주세요.
