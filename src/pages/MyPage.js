@@ -6,7 +6,7 @@ import Nav from "../component/BottomNav";
 const MyPage = () => {
 
     var userId = localStorage.getItem('id');
-    var nickName = localStorage.getItem('id');
+    var nickName = localStorage.getItem('nickname');
 
     // const keep = ["바보의 세계", "검은고양이", "청부살인 협동조합"]
     // const keep = []
